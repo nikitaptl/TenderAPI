@@ -1,13 +1,30 @@
 # Работу выполнил Потылицин Никита Сергеевич
 ## Стек
 - Go
-- Библиотеки Go 
 - Postgres
 
 ## Запуск проекта
 
-В корневой директории располагается Dockefile. Поскольку используется Kubernetes, переменные окружения в Dockerfile не указаны.
+Проект можно запустить с помощью Docker Compose, выполнив следующую команду:
 
+```bash
+docker-compose up --build
+```
+
+Если есть необходимость использовать свою базу данных, то запустите проект с помощью Dockerfile (убедитесь, что контейнеры находятся в одной сети Docker)
+
+1. Соберите образ приложения:
+```bash
+docker build -t tender-api .
+```
+2. Запустите контейнер, передав переменные окружения:
+```
+docker run -e SERVER_ADDRESS=0.0.0.0:8080 -e POSTGRES_CONN=postgres://user:password@postgres:5432/postgres -e POSTGRES_USERNAME=user -e POSTGRES_PASSWORD=password -e POSTGRES_HOST=postgres -e POSTGRES_PORT=5432 -e POSTGRES_DATABASE=postgres -p 8080:8080 tender-api
+```
+Или явно задав имя сети:
+```
+docker run --network=tenderapi_network -e SERVER_ADDRESS=0.0.0.0:8080 -e POSTGRES_CONN=postgres://user:password@postgres:5432/postgres -e POSTGRES_USERNAME=user -e POSTGRES_PASSWORD=password -e POSTGRES_HOST=postgres -e POSTGRES_PORT=5432 -e POSTGRES_DATABASE=postgres -p 8080:8080 tender-api
+```
 
 ## Про сервис
 
